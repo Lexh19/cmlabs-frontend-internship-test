@@ -23,7 +23,7 @@ function displayMealDetails(meal) {
             <img class="img-fluid" src="${meal.strMealThumb}" alt="${meal.strMeal}">
         </div>
         <div class="col-md-6">
-            <h2>${meal.strMeal}</h2>
+            <h2 class="mt-4">${meal.strMeal}</h2>
             <p><strong>Category:</strong> ${meal.strCategory}</p>
             <p><strong>Area:</strong> ${meal.strArea}</p>
             <p><strong>Instructions:</strong> ${meal.strInstructions}</p>

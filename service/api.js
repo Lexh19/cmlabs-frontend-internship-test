@@ -23,3 +23,5 @@ function fetchMealDetails(id) {
 
 // Exporting functions
 export { fetchAllMeals, fetchCategories, fetchMealsByCategory, fetchMealDetails};
+
+/search.php?s=
