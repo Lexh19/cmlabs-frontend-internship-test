@@ -27,5 +27,5 @@ Jika diperlukan, Anda dapat menjalankan server lokal untuk mengakses file dengan
 
 # Bisa melihat hasil website yang sudah saya upload ke varcel dengan link yang ada di bawah ini 
 -https://cmlabs-frontend-internship-test-eight.vercel.app/
--cmlabs-frontend-internship-git-26de66-iqbaals-projects-ba151875.vercel.app
--cmlabs-frontend-internship-test-d8wht18cs.vercel.app
+-https://cmlabs-frontend-internship-git-26de66-iqbaals-projects-ba151875.vercel.app
+-https://cmlabs-frontend-internship-test-d8wht18cs.vercel.app
