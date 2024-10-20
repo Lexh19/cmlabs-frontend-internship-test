@@ -94,6 +94,18 @@
 
     <!-- Axios API Call -->
     <script>
+        // Function to fetch all meals (show all meals on page load)
+        function fetchAllMeals() {
+            axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=')
+                .then(function (response) {
+                    const meals = response.data.meals;
+                    displayMeals(meals);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
         // Function to fetch categories and populate filter dropdown
         function fetchCategories() {
             axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
@@ -118,36 +130,41 @@
             axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
                 .then(function (response) {
                     const meals = response.data.meals;
-                    const productList = document.getElementById('product-list');
-                    productList.innerHTML = ''; // Clear previous meals
-                    
-                    meals.forEach(meal => {
-                        const productHTML = `
-                            <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                <div class="product-item">
-                                    <div class="position-relative bg-light overflow-hidden">
-                                        <img class="img-fluid w-100" src="${meal.strMealThumb}" alt="${meal.strMeal}">
-                                        <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
-                                    </div>
-                                    <div class="text-center p-4">
-                                        <a class="d-block h5 mb-2" href="#">${meal.strMeal}</a>
-                                    </div>
-                                    <div class="d-flex border-top">
-                                        <small class="w-50 text-center border-end py-2">
-                                            <a class="text-body" href="#"><i class="fa fa-eye text-primary me-2"></i>View detail</a>
-                                        </small>
-                                        <small class="w-50 text-center py-2">
-                                            <a class="text-body" href="#"><i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart</a>
-                                        </small>
-                                    </div>
-                                </div>
-                            </div>`;
-                        productList.innerHTML += productHTML;
-                    });
+                    displayMeals(meals);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+        }
+
+        // Function to display meals (used by both fetchAllMeals and fetchMealsByCategory)
+        function displayMeals(meals) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = ''; // Clear previous meals
+            
+            meals.forEach(meal => {
+                const productHTML = `
+                    <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="product-item">
+                            <div class="position-relative bg-light overflow-hidden">
+                                <img class="img-fluid w-100" src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                                <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
+                            </div>
+                            <div class="text-center p-4">
+                                <a class="d-block h5 mb-2" href="#">${meal.strMeal}</a>
+                            </div>
+                            <div class="d-flex border-top">
+                                <small class="w-50 text-center border-end py-2">
+                                    <a class="text-body" href="#"><i class="fa fa-eye text-primary me-2"></i>View detail</a>
+                                </small>
+                                <small class="w-50 text-center py-2">
+                                    <a class="text-body" href="#"><i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart</a>
+                                </small>
+                            </div>
+                        </div>
+                    </div>`;
+                productList.innerHTML += productHTML;
+            });
         }
 
         // Event listener for category selection change
@@ -156,12 +173,13 @@
             if (selectedCategory) {
                 fetchMealsByCategory(selectedCategory);
             } else {
-                document.getElementById('product-list').innerHTML = ''; // Clear product list if no category selected
+                fetchAllMeals(); // If no category selected, show all meals
             }
         });
 
-        // Initial call to populate categories
+        // Initial calls to fetch all meals and categories
         document.addEventListener('DOMContentLoaded', function () {
+            fetchAllMeals();
             fetchCategories();
         });
     </script>
