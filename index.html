@@ -20,15 +20,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+<!-- Include Axios from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 
 <body>
@@ -71,18 +74,66 @@
     </div>
     <!-- Navbar End -->
 
+    
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" src="img/carousel-1.jpg" alt="Image">
+                    <div class="carousel-caption">
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-lg-7">
+                                    <h1 class="display-2 mb-5 animated slideInDown">Welcome To The Meal.app Website</h1>
+                                    <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Products</a>
+                                    <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="w-100" src="img/carousel-2.jpg" alt="Image">
+                    <div class="carousel-caption">
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-lg-7">
+                                    <h1 class="display-2 mb-5 animated slideInDown">Natural Food Is Always Healthy</h1>
+                                    <a href="" class="btn btn-primary rounded-pill py-sm-3 px-sm-5">Products</a>
+                                    <a href="" class="btn btn-secondary rounded-pill py-sm-3 px-sm-5 ms-3">Services</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
     <!-- Filter and Product Section Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-0 gx-5 align-items-end">
                 <div class="col-lg-6">
-                    <div class="section-header text-start mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                    <div class="section-header text-start mb-5">
                         <h1 class="display-5 mb-3">Our Products</h1>
                         <p>Check out our latest meal categories from different types of food.</p>
                     </div>
                 </div>
-                <div class="col-lg-6 text-end">
-                    <select id="category-filter" class="form-select w-50">
+                <div class="col-lg-6 text-end ">
+                    <select id="category-filter" class="form-select w-50 mb-5">
                         <option value="">Select Category</option>
                     </select>
                 </div>
@@ -92,155 +143,22 @@
     </div>
     <!-- Filter and Product Section End -->
 
-    <!-- Axios API Call -->
-    <script>
-        // Function to fetch all meals (show all meals on page load)
-        function fetchAllMeals() {
-            axios.get('https://www.themealdb.com/api/json/v1/1/search.php?s=')
-                .then(function (response) {
-                    const meals = response.data.meals;
-                    displayMeals(meals);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-
-        // Function to fetch categories and populate filter dropdown
-        function fetchCategories() {
-            axios.get('https://www.themealdb.com/api/json/v1/1/categories.php')
-                .then(function (response) {
-                    const categories = response.data.categories;
-                    const categoryFilter = document.getElementById('category-filter');
-                    
-                    categories.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.strCategory;
-                        option.textContent = category.strCategory;
-                        categoryFilter.appendChild(option);
-                    });
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-
-        // Function to fetch and display meals by selected category
-        function fetchMealsByCategory(category) {
-            axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
-                .then(function (response) {
-                    const meals = response.data.meals;
-                    displayMeals(meals);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        }
-
-        // Function to display meals (used by both fetchAllMeals and fetchMealsByCategory)
-        function displayMeals(meals) {
-            const productList = document.getElementById('product-list');
-            productList.innerHTML = ''; // Clear previous meals
-            
-            meals.forEach(meal => {
-                const productHTML = `
-                    <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="product-item">
-                            <div class="position-relative bg-light overflow-hidden">
-                                <img class="img-fluid w-100" src="${meal.strMealThumb}" alt="${meal.strMeal}">
-                                <div class="bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">New</div>
-                            </div>
-                            <div class="text-center p-4">
-                                <a class="d-block h5 mb-2" href="#">${meal.strMeal}</a>
-                            </div>
-                            <div class="d-flex border-top">
-                            <small class="w-50 text-center border-end py-2">
-                                <a class="text-body" href="meal-details.html?id=${meal.idMeal}"><i class="fa fa-eye text-primary me-2"></i>View detail</a>
-                            </small>
-
-                                <small class="w-50 text-center py-2">
-                                    <a class="text-body" href="#"><i class="fa fa-shopping-bag text-primary me-2"></i>Add to cart</a>
-                                </small>
-                            </div>
-                        </div>
-                    </div>`;
-                productList.innerHTML += productHTML;
-            });
-        }
-
-        // Event listener for category selection change
-        document.getElementById('category-filter').addEventListener('change', function () {
-            const selectedCategory = this.value;
-            if (selectedCategory) {
-                fetchMealsByCategory(selectedCategory);
-            } else {
-                fetchAllMeals(); // If no category selected, show all meals
-            }
-        });
-
-        // Initial calls to fetch all meals and categories
-        document.addEventListener('DOMContentLoaded', function () {
-            fetchAllMeals();
-            fetchCategories();
-        });
-    </script>
-    <!-- Product End -->
-
-
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <h1 class="fw-bold text-primary mb-4">F<span class="text-secondary">oo</span>dy</h1>
-                    <p>Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                    <p>Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita</p>   
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Address</h4>
-                    <p><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Our Services</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-light mb-4">Newsletter</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
+                <div class="col-lg-6 col-md-6">
+                    <p><i class="fa fa-map-marker-alt me-3"></i>Perum Griya Arga Permai DD-17 Nogotiro Gamping Sleman Yogyakarta</p>
+                    <p><i class="fa fa-phone-alt me-3"></i>+62 895-3430-17921</p>
+                    <p><i class="fa fa-envelope me-3"></i>iqbaalhzd.com</p>
                 </div>
             </div>
         </div>
-        <div class="container-fluid copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">Your Site Name</a>, All Right Reserved.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                        <br>Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Footer End -->
 
 
@@ -251,10 +169,10 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script src="./js/main.js"></script>
+    <script type="module" src="./service/api.js"></script>
+    <script type="module" src="./service/product.js"></script>
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
